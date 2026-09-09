@@ -1,0 +1,324 @@
+/* ==========================================================================
+   Digital Leaders 2026 scrollytelling story
+   Emerging brand system: navy / gold / periwinkle / orange, Montserrat.
+
+   Deliberately single-theme. The figures are transparent PNGs carrying dark
+   navy type, so they only read on a light ground; a dark variant would need a
+   second set of figures rather than a palette swap. Every colour is painted
+   explicitly so the page holds on whatever ground the host provides.
+   ========================================================================== */
+
+:root {
+  color-scheme: light;
+
+  --navy: #0F1374;
+  --peri: #4B5BCB;
+  --gold: #DBB67D;
+  --orange: #FF4901;
+
+  --ground: #FFFFFF;      /* the figures are drawn on nothing, so the page
+                             background IS the figure background */
+  --tint: #F5F6FC;
+  --ink: #14162E;
+  --muted: #5E6383;
+  --hairline: #E4E7F3;
+
+  --measure: 33rem;
+  --f-display: "Montserrat", "Segoe UI", system-ui, sans-serif;
+  --f-body: "Montserrat", "Segoe UI", system-ui, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: 17px;
+  line-height: 1.72;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------------------------------------------------------------- progress */
+.progress {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 2px;
+  z-index: 60;
+  pointer-events: none;
+}
+.progress__bar {
+  height: 100%;
+  width: 0;
+  background: var(--orange);
+}
+
+/* ------------------------------------------------------------------- shell */
+.wrap {
+  width: min(100% - 3rem, 74rem);
+  margin-inline: auto;
+}
+
+.kicker {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--peri);
+  margin: 0 0 0.9rem;
+}
+
+/* -------------------------------------------------------------------- hero */
+.hero { padding: 4.5rem 0 3rem; }
+.hero__inner { max-width: 52rem; }
+.hero h1 {
+  font-family: var(--f-display);
+  font-weight: 800;
+  font-size: clamp(2.2rem, 5.2vw, 3.8rem);
+  line-height: 1.07;
+  letter-spacing: -0.02em;
+  color: var(--navy);
+  margin: 0 0 1.4rem;
+  text-wrap: balance;
+}
+.hero__stand {
+  font-size: clamp(1.05rem, 1.7vw, 1.28rem);
+  line-height: 1.6;
+  color: var(--muted);
+  max-width: 40rem;
+  margin: 0 0 2.4rem;
+}
+.hero__figures {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2.2rem 3.4rem;
+  padding-top: 1.7rem;
+  border-top: 3px solid var(--gold);
+  max-width: 46rem;
+}
+.hero__fig { display: flex; flex-direction: column; gap: 0.15rem; }
+.hero__fig b {
+  font-family: var(--f-display);
+  font-weight: 800;
+  font-size: clamp(1.7rem, 3vw, 2.3rem);
+  color: var(--navy);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+.hero__fig span { font-size: 0.82rem; color: var(--muted); line-height: 1.45; }
+.hero__cue {
+  margin-top: 2.6rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.hero__cue i {
+  width: 1px; height: 24px; background: var(--muted); display: block;
+  animation: cue 1.9s ease-in-out infinite;
+  transform-origin: top center;
+}
+@keyframes cue { 0%,100% { transform: scaleY(0.4); opacity: .35 } 50% { transform: scaleY(1); opacity: 1 } }
+
+/* ---------------------------------------------------------------- chapters */
+.chapter { padding: 3.5rem 0 0; }
+.chapter__head { max-width: var(--measure); }
+.chapter__head h2 {
+  font-family: var(--f-display);
+  font-weight: 800;
+  font-size: clamp(1.55rem, 2.9vw, 2.1rem);
+  line-height: 1.16;
+  color: var(--navy);
+  margin: 0 0 0.7rem;
+  text-wrap: balance;
+}
+.chapter__head p { margin: 0; color: var(--muted); }
+.chapter__num {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+/* ----------------------------------------------------------- scrolly block
+
+   No card, no border, no shadow: the graphic sits straight on the page, the
+   way a figure sits in an article. The sticky column must stay SHORTER than
+   one step (86vh against 100vh) or it has no room to stick and scrolls away. */
+.scrolly {
+  display: grid;
+  grid-template-columns: minmax(0, 23rem) minmax(0, 1fr);
+  gap: 0 4.5rem;
+  align-items: start;
+}
+.scrolly__graphic {
+  position: sticky;
+  top: 7vh;
+  height: 86vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  order: 2;
+}
+.scrolly__steps { order: 1; }
+
+.stack {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.layer {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 220ms ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.layer.is-active { opacity: 1; }
+.layer img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.step {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+.step__card { max-width: var(--measure); padding: 1.5rem 0; }
+.step h3 {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: 1.1rem;
+  line-height: 1.35;
+  color: var(--navy);
+  margin: 0 0 0.7rem;
+  text-wrap: balance;
+  transition: color 200ms ease;
+}
+.step p { margin: 0 0 0.9rem; }
+.step p:last-child { margin-bottom: 0; }
+.step .lede { font-size: 1.02rem; }
+.step .stat {
+  font-family: var(--f-display);
+  font-weight: 800;
+  color: var(--orange);
+  font-variant-numeric: tabular-nums;
+}
+.step .note {
+  font-size: 0.8rem;
+  color: var(--muted);
+  border-left: 2px solid var(--gold);
+  padding-left: 0.9rem;
+  line-height: 1.6;
+}
+.step[data-active="true"] h3 { color: var(--peri); }
+
+/* ------------------------------------------------------------ waffle chart */
+.waffle-holder {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  color: var(--ink);
+}
+.waffle-caption {
+  font-family: var(--f-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 0 0 0.9rem;
+}
+.waffle-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.1rem;
+  margin-top: 1rem;
+  font-size: 0.72rem;
+  color: var(--ink);
+}
+.waffle-legend span { display: inline-flex; align-items: center; gap: 0.35rem; }
+.waffle-legend i { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+
+/* ------------------------------------------------------------------- outro */
+.outro {
+  margin-top: 4rem;
+  padding: 4rem 0 4.5rem;
+  background: var(--navy);
+  color: #EDEFFB;
+}
+.outro h2 {
+  font-family: var(--f-display);
+  font-weight: 800;
+  font-size: clamp(1.65rem, 3.2vw, 2.4rem);
+  margin: 0 0 1rem;
+  color: #FFFFFF;
+  text-wrap: balance;
+}
+.outro p { max-width: 40rem; color: #C6CBEC; }
+.outro .cta {
+  display: inline-block;
+  margin-top: 1.5rem;
+  padding: 0.85rem 1.6rem;
+  background: var(--orange);
+  color: #FFFFFF;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.92rem;
+}
+.outro .cta:hover { background: #E33F00; }
+.outro__meta {
+  margin-top: 2.8rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+  font-size: 0.78rem;
+  color: #A9AFD8;
+  max-width: 46rem;
+  line-height: 1.65;
+}
+
+/* --------------------------------------------------------------- a11y/misc */
+a:focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; }
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* -------------------------------------------------------------- responsive */
+@media (max-width: 900px) {
+  .scrolly { grid-template-columns: 1fr; gap: 0; }
+  .scrolly__graphic {
+    order: 1;
+    top: 0;
+    height: auto;
+    padding: 0.9rem 0;
+    background: var(--ground);
+    z-index: 20;
+    border-bottom: 1px solid var(--hairline);
+  }
+  .scrolly__steps { order: 2; }
+  .stack { height: 44vh; }
+  .step { min-height: 76vh; }
+  .hero { padding: 2.75rem 0 2.25rem; }
+  .hero__figures { gap: 1.5rem 2.2rem; }
+  .wrap { width: min(100% - 2.5rem, 74rem); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .layer, .step h3 { transition: none; }
+  .hero__cue i { animation: none; }
+  html { scroll-behavior: auto; }
+}
