@@ -36,10 +36,10 @@
       caption: "The Global 200, by country",
       key: "c",
       order: ["United States", "United Kingdom", "India", "Australia", "France",
-              "Canada", "China", "Israel"],
+              "Canada", "China", "Spain", "Israel", "Germany"],
       colors: ["#0F1374", "#4B5BCB", "#FF4901", "#DBB67D", "#860018", "#0E8A5F",
-               "#FF9E79", "#98A0DF"],
-      restLabel: "33 other countries"
+               "#FF9E79", "#98A0DF", "#B26FA0", "#6FB2A6"],
+      restLabel: "31 other countries"
     },
     region: {
       caption: "The same 200, by world region",
